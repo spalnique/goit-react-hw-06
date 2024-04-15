@@ -1,10 +1,18 @@
 import { useId } from 'react';
-import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import clsx from 'clsx';
 import * as Yup from 'yup';
+import { addContact } from '../../redux/contactsSlice';
+
 import css from '../ContactForm/ContactForm.module.css';
 
-export default function ContactForm({ initialValues, onContactAdd }) {
+const initialValues = {
+  username: '',
+  phone: '',
+};
+
+const ContactForm = () => {
   const FeedbackSchema = Yup.object().shape({
     username: Yup.string()
       .min(3, 'Username is too short!')
@@ -18,9 +26,11 @@ export default function ContactForm({ initialValues, onContactAdd }) {
   const usernameFieldId = useId();
   const phoneFieldId = useId();
 
-  const handleSubmit = (values, actions) => {
-    onContactAdd(values);
-    actions.resetForm();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (values, form) => {
+    dispatch(addContact(values));
+    form.resetForm();
   };
 
   return (
@@ -28,7 +38,7 @@ export default function ContactForm({ initialValues, onContactAdd }) {
       initialValues={initialValues}
       validationSchema={FeedbackSchema}
       onSubmit={handleSubmit}>
-      {formikData => {
+      {(formikData) => {
         return (
           <Form className={css.formContainer}>
             <div className={css.fieldContainer}>
@@ -79,4 +89,6 @@ export default function ContactForm({ initialValues, onContactAdd }) {
       }}
     </Formik>
   );
-}
+};
+
+export default ContactForm;
