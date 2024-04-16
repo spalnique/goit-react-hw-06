@@ -1,8 +1,9 @@
 import storage from 'redux-persist/lib/storage';
 
 export const contactsPersistConfig = {
-  key: 'contact-list',
+  key: 'items',
   storage,
+  whitelist: ['items'],
 };
 
 export const formikInitialValues = {
