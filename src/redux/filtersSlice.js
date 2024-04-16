@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { appInitState } from './constants';
 
 const filtersSlice = createSlice({
   name: 'filters',
-  initialState: { name: '' },
+  initialState: appInitState.filters,
   reducers: {
     changeFilter(state, action) {
       state.name = action.payload;
