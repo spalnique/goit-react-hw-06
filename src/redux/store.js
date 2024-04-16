@@ -1,26 +1,28 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { contactsReducer } from './contactsSlice';
 import { filtersReducer } from './filtersSlice';
-
-// const getSavedContacts = () => {
-//   return JSON.parse(localStorage.getItem('contact-list'))
-//     ? JSON.parse(localStorage.getItem('contact-list'))
-//     : [];
-// };
-
-export const app_init_state = {
-  contacts: {
-    items: [],
-  },
-  filters: {
-    name: '',
-  },
-};
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import { contactsPersistConfig } from './constants';
 
 export const store = configureStore({
   reducer: {
-    contacts: contactsReducer,
+    contacts: persistReducer(contactsPersistConfig, contactsReducer),
     filters: filtersReducer,
   },
-  preloadedState: app_init_state,
+  middleware: (getDefaultMiddleWare) =>
+    getDefaultMiddleWare({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+export const storePersistor = persistStore(store);

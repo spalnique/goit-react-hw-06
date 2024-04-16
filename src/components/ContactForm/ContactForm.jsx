@@ -4,13 +4,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import clsx from 'clsx';
 import * as Yup from 'yup';
 import { addContact } from '../../redux/contactsSlice';
+import { formikInitialValues } from '../../redux/constants';
 
 import css from '../ContactForm/ContactForm.module.css';
-
-const initialValues = {
-  username: '',
-  phone: '',
-};
 
 const ContactForm = () => {
   const FeedbackSchema = Yup.object().shape({
@@ -35,7 +31,7 @@ const ContactForm = () => {
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={formikInitialValues}
       validationSchema={FeedbackSchema}
       onSubmit={handleSubmit}>
       {(formikData) => {
